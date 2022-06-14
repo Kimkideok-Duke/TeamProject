@@ -6,6 +6,7 @@ public class test1 {
 		// TODO Auto-generated method stub
 		System.out.println("Hello World");
 		System.out.println("test1(win->mac)");
+		System.out.println("test2(mac->win)");
 	}
 
 }
