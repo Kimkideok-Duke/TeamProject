@@ -41,8 +41,33 @@ FROM users001
 where gender=?
 AND loc=?
 
+/**   회원 조회   **/
+SELECT userno, nickname, gender, age, loc, interest1, interest2, interest3, interest4, interest5
+FROM users001
+WHERE userno = ?
+
 /**   회원 등록   **/
-INSERT INTO users001 values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+INSERT INTO users001 
+values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+
+/**   회원 수정   **/
+UPDATE users001
+    SET id = ?,
+        passwd = ?,
+        nickname= ?, 
+        gender = ?,
+        age = ?,
+        loc = ?,
+        interest1 = ?,
+        interest2 = ?,
+        interest3 = ?,
+        interest4 = ?,
+        interest5 = ?
+WHERE userno = ?
+
+/**   회원 삭제   **/
+DELETE FROM users001
+WHERE userno = ?
 
 /**   공지 조회   **/
 SELECT nttitle, ntcontent
