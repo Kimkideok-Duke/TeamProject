@@ -1,6 +1,6 @@
 package db;
 
-public class users {
+public class users001 {
 	private String userno;
 	private String id;
 	private String passwd;
@@ -14,12 +14,26 @@ public class users {
 	private String interest4;
 	private String interest5;
 
-	public users() {
+	public users001() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public users(String userno, String id, String passwd, String nickname, String gender, int age, String loc,
+	public users001(String nickname, String gender, int age, String loc,
+			String interest1, String interest2, String interest3, String interest4, String interest5) {
+		super();
+		this.nickname = nickname;
+		this.gender = gender;
+		this.age = age;
+		this.loc = loc;
+		this.interest1 = interest1;
+		this.interest2 = interest2;
+		this.interest3 = interest3;
+		this.interest4 = interest4;
+		this.interest5 = interest5;
+	}
+
+	public users001(String userno, String id, String passwd, String nickname, String gender, int age, String loc,
 			String interest1, String interest2, String interest3, String interest4, String interest5) {
 		super();
 		this.userno = userno;

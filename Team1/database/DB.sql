@@ -1,4 +1,4 @@
-CREATE TABLE users001 (
+CREATE TABLE USERS001 (
     userno varchar2(50) PRIMARY KEY,
     id varchar2(50) NOT NULL UNIQUE,
     passwd varchar2(50) NOT NULL,
@@ -40,9 +40,10 @@ SELECT userno, nickname, gender, age, loc, interest1, interest2, interest3, inte
 FROM users001
 where gender=?
 AND loc=?
+AND age >= ? AND age <= ?
 
 /**   회원 조회   **/
-SELECT userno, nickname, gender, age, loc, interest1, interest2, interest3, interest4, interest5
+SELECT nickname, gender, age, loc, interest1, interest2, interest3, interest4, interest5
 FROM users001
 WHERE userno = ?
 
@@ -74,12 +75,54 @@ SELECT nttitle, ntcontent
 FROM notice
 WHERE noticeno = ?
 
+/**   공지 등록   **/
+INSERT INTO notice 
+values(?, ?, ?)
+
+/**   공지 수정   **/
+UPDATE notice
+    SET nttitle = ?,
+        ntcontent= ?
+WHERE noticeno = ?
+
+/**   공지 삭제   **/
+DELETE FROM notice
+WHERE noticeno = ?
+
 /**   FAQ 조회   **/
 SELECT question, answer
 FROM faq
 WHERE faqno = ?
 
+/**   FAQ 등록   **/
+INSERT INTO faq 
+values(?, ?, ?)
+
+/**   FAQ 수정   **/
+UPDATE faq
+    SET question = ?,
+        answer= ?
+WHERE faqno = ?
+
+/**   FAQ 삭제   **/
+DELETE FROM faq
+WHERE faqno = ?
+
 /**   리뷰 조회   **/
 SELECT rvtitle, rvcontent
-FROM notice
+FROM review
+WHERE reviewno = ?
+
+/**   리뷰 등록   **/
+INSERT INTO review 
+values(?, ?, ?)
+
+/**   리뷰 수정   **/
+UPDATE review
+    SET rvtitle = ?,
+        rvcontent= ?
+WHERE reviewno = ?
+
+/**   리뷰 삭제   **/
+DELETE FROM review
 WHERE reviewno = ?
