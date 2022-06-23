@@ -1,3 +1,4 @@
+-- 회원 테이블 (회원번호, 아이디, 비밀번호, 닉네임, 성별, 나이, 지역, 관심사 1, 관심사2, 관심사3, 관심사4, 관심사5)
 CREATE TABLE USERS001 (
     userno varchar2(50) PRIMARY KEY,
     id varchar2(50) NOT NULL UNIQUE,
@@ -12,26 +13,107 @@ CREATE TABLE USERS001 (
     interest4 varchar2(50) NOT NULL,
     interest5 varchar2(50) NOT NULL
 );
+	
+		-- 회원 테이블 - 회원번호 시퀀스
+		CREATE SEQUENCE seq_userno
+			INCREMENT BY 1
+			START WITH 1
+			MAXVALUE 9999;
+		
+		-- 회원 테이블 - 회원 가입 양식(insert)
+		INSERT INTO users001 values('U' || seq_userno.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+		-- 회원 테이블 - 회원 정보 조회 양식(search)
+		SELECT *
+		FROM users001
+		WHERE userno = ?;
+		-- 회원 테이블 - 회원 정보 수정 양식(update)
+		UPDATE users001
+		    SET id = ?,
+		        passwd = ?,
+		        nickname= ?, 
+		        gender = ?,
+		        age = ?,
+		        loc = ?,
+		        interest1 = ?,
+		        interest2 = ?,
+		        interest3 = ?,
+		        interest4 = ?,
+		        interest5 = ?
+		WHERE userno = ?;
+		-- 회원 테이블 - 회원 탈퇴 양식(delete)
+		DELETE FROM users001 WHERE userno = ?;
 
+
+	
+-- 공지사항 테이블 (공지번호, 공지제목, 공지작성자, 공지작성일자, 공지내용)
 CREATE TABLE notice (
 	noticeno varchar2(50) PRIMARY KEY,
 	nttitle varchar2(500) NOT NULL,
-	ntcontent varchar2(1000) NOT NULL
+	ntwriter varchar2(50) NOT NULL,
+	ntdate DATE NOT NULL,
+	ntcontent varchar2(5000) NOT NULL
 );
+		-- 공지사항 테이블 - 공지번호 시퀀스
+		CREATE SEQUENCE seq_noticeno
+			INCREMENT BY 1
+			START WITH 1
+			MAXVALUE 9999;
+		
+		-- 공지사항 테이블 - 공지등록 양식(insert)
+		INSERT INTO notice values('N' || seq_noticeno.nextval, ?, ?, sysdate, ?);
+		-- 공지사항 테이블 - 공지조회 양식(search)
+			-- 1. 제목으로 검색
+			SELECT nttitle, ntwriter, ntcontent
+			FROM notice
+			WHERE nttitle = '%' || ? || '%';
+		-- 공지사항 테이블 - 공지수정 양식(update)
+		-- 공지사항 테이블 - 공지삭제 양식(delete)
 
+
+	
+-- FAQ 테이블 (FAQ번호, 질문, 답변)
 CREATE TABLE faq (
 	faqno varchar2(50) PRIMARY KEY,
 	question varchar2(500) NOT NULL,
-	answer varchar2(3000) NOT NULL
+	answer varchar2(5000) NOT NULL
 );
+		
+		-- FAQ 테이블 - FAQ번호 시퀀스
+		CREATE SEQUENCE seq_faqno
+			INCREMENT BY 1
+			START WITH 1
+			MAXVALUE 9999;
+		
+		-- FAQ 테이블 - FAQ등록 양식
+		INSERT INTO faq values('Q' || seq_faqno.nextval, ?, ?);
+		-- FAQ 테이블 - FAQ조회 양식
+		-- FAQ 테이블 - FAQ수정 양식
+		-- FAQ 테이블 - FAQ삭제 양식
+	
+	
 
-
+-- 리뷰 테이블 (리뷰번호, 리뷰제목, 리뷰작성자, 리뷰작성일자, 리뷰내용)
 CREATE TABLE review (
 	reviewno varchar2(50) PRIMARY KEY,
 	rvtitle varchar2(500) NOT NULL,
-	rvcontent varchar2(4000) NOT NULL
+	rvwriter varchar2(50) NOT NULL,
+	rvdate DATE NOT NULL,
+	rvcontent varchar2(5000) NOT NULL
 );
 
+		-- 리뷰 테이블 - 리뷰번호 시퀀스
+		CREATE SEQUENCE seq_reviewno
+			INCREMENT BY 1
+			START WITH 1
+			MAXVALUE 9999;
+		
+		-- 리뷰 테이블 - 리뷰등록 양식
+		INSERT INTO review values('R' || seq_reviewno.nextval, ?, ?, sysdate, ?); 
+		-- 리뷰 테이블 - 리뷰조회 양식
+		-- 리뷰 테이블 - 리뷰수정 양식
+		-- 리뷰 테이블 - 리뷰삭제 양식
+	
+	
 
 SELECT * FROM users001;
 
