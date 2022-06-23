@@ -49,9 +49,8 @@ CREATE TABLE USERS001 (
 CREATE TABLE notice (
 	noticeno varchar2(50) PRIMARY KEY,
 	nttitle varchar2(500) NOT NULL,
-	ntwriter varchar2(50) NOT NULL,
+	ntcontent varchar2(1000) NOT NULL
 	ntdate DATE NOT NULL,
-	ntcontent varchar2(5000) NOT NULL
 );
 		-- 공지사항 테이블 - 공지번호 시퀀스
 		CREATE SEQUENCE seq_noticeno
@@ -63,7 +62,7 @@ CREATE TABLE notice (
 		INSERT INTO notice values('N' || seq_noticeno.nextval, ?, ?, sysdate, ?);
 		-- 공지사항 테이블 - 공지조회 양식(search)
 			-- 1. 제목으로 검색
-			SELECT nttitle, ntwriter, ntcontent
+			SELECT nttitle, ntcontent
 			FROM notice
 			WHERE nttitle = '%' || ? || '%';
 		-- 공지사항 테이블 - 공지수정 양식(update)
@@ -75,7 +74,8 @@ CREATE TABLE notice (
 CREATE TABLE faq (
 	faqno varchar2(50) PRIMARY KEY,
 	question varchar2(500) NOT NULL,
-	answer varchar2(5000) NOT NULL
+	answer varchar2(3000) NOT NULL,
+	faqdate DATE NOT NULL
 );
 		
 		-- FAQ 테이블 - FAQ번호 시퀀스
@@ -97,8 +97,8 @@ CREATE TABLE review (
 	reviewno varchar2(50) PRIMARY KEY,
 	rvtitle varchar2(500) NOT NULL,
 	rvwriter varchar2(50) NOT NULL,
-	rvdate DATE NOT NULL,
-	rvcontent varchar2(5000) NOT NULL
+	rvcontent varchar2(4000) NOT NULL,
+	rvdate DATE NOT NULL
 );
 
 		-- 리뷰 테이블 - 리뷰번호 시퀀스
@@ -153,7 +153,7 @@ DELETE FROM users001
 WHERE userno = ?
 
 /**   공지 조회   **/
-SELECT nttitle, ntcontent
+SELECT nttitle, ntcontent, ntdate
 FROM notice
 WHERE noticeno = ?
 
@@ -172,7 +172,7 @@ DELETE FROM notice
 WHERE noticeno = ?
 
 /**   FAQ 조회   **/
-SELECT question, answer
+SELECT question, answer, faqdate
 FROM faq
 WHERE faqno = ?
 
@@ -191,7 +191,7 @@ DELETE FROM faq
 WHERE faqno = ?
 
 /**   리뷰 조회   **/
-SELECT rvtitle, rvcontent
+SELECT rvtitle, rvcontent, rvdate
 FROM review
 WHERE reviewno = ?
 
