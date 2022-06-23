@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
+<%
+String path=request.getContextPath();
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -105,61 +108,53 @@ li a:hover {
 	height: 125px;
 	width: 0;
 }
-.contents-slider {
-	background-color: #ffaaaa;
-	height: 400px;
-}
 
-.contents-slider .slick-arrow {
-	display: block;
+
+.matching-message{
 	position: absolute;
-	left: 95%;
-	top: 50%;
-	z-index: 1;
-}
-
-.contents-slider .slick-dots {
-	display: inline;
-	text-align: center;
-}
-
-.cotents-review {
-	display: inline-block;
-	padding: 10px 0 0 0;
-	width: 50%;
-	height: 260px;
-	background-color: #F38FAE;
-}
-
-.contents-FAQ {
-	display: inline-block;
-	text-align: right;
-	padding: 10px 0 0 0;
-	width: 50%;
-	height: 260px;
-	background-color: #F56694;
-}
-
-.footer {
-	width: 100%;
-	height: 150px;
-	background-color: #D4DADE;
-}
-
-
-
-/*
-	.category{height: 60px;}
+	left: 460px;
+	top: 220px;
+	color: rgb(250, 80, 120);
 	
-	.category>a{margin: 20px 20px 20px 20px; }
-	.category>a:link{color: black; text-decoration: none;}
-	.category>a:visited {color: black;}
-	.category>a:hover {color: black; text-decoration: underline;}
-	*/
+}
+.matching2 > img{
+	width: 130%;
+	position: absolute;
+}
+.matching2{
+	position: absolute;
+	padding: 100px;
+	left: 400px;
+	top: 240px;
+}
+
+.matching-button > input{
+	padding: 8px 60px;
+	appearance: none;
+	font-family: "Noto Sans KR", sans-serif;
+	color: #FFFFFF;
+	font-size: 16px;
+	cursor: pointer;
+	background-color: rgb(250, 80, 120);
+	border: none;
+	border-radius: 4px;
+}	
+.matching-button{
+	position: absolute;
+	left: 500px;
+	top: 580px;
+	padding: 0 0 80px 0;
+}
+
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap");
 </style>
 <script src="https://kit.fontawesome.com/99c434d4a4.js" crossorigin="anonymous"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<script>
+/*
+ 
+ */
+</script>
 </head>
 <body>
 <div id="header">
@@ -186,42 +181,16 @@ li a:hover {
 </div>
 <div id="guard"></div>
 
-	<div class="contents-slider">
 
-		<div class="post">1</div>
-		<div class="post">2</div>
-		<div class="post">3</div>
-		<div class="post">4</div>
-		<div class="post">5</div>
-	</div>
+<div class="matching-message">
+	<h1>매칭이 성사되었습니다!</h1>
+</div>
+<div class="matching2">
+	<img src="matching2.JPG">
+</div>
+<div class="matching-button">
+	<input type="button" onclick="" name="success" value="상대방 정보 보러가기">
+</div>
 
-	<script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
-	<script
-		src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-	<link rel="stylesheet"
-		href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
-	<link rel="stylesheet"
-		href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
-
-	<script>
-		$( document ).ready( function() {
-		$('.contents-slider').slick({
-		  autoplay : true, 
-		  arrows : true,
-		  infinite: true,
-		  speed: 600,
-		  slidesToShow: 1,
-		  adaptiveHeight: true
-		});
-		});
-	</script>
-
-	<div class="cotents-review">리뷰</div><!--
-
- --><div class="contents-FAQ">FAQ</div>
-
-	<div class="footer">회사소개
-	</div>
 </body>
 </html>
-
