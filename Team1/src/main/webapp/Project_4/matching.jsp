@@ -170,32 +170,32 @@ li a:hover {
 	<div class="age-dropdown1">
 		상대방 나이 <select name='age'>
 		  <option value='' selected>-- 선택 --</option>
-		  <option value='1990'>1990</option>
-		  <option value='1991'>1991</option>
-		  <option value='1992'>1992</option>
-		  <option value='1993'>1993</option>
-		  <option value='1994'>1994</option>
-		  <option value='1995'>1995</option>
-		  <option value='1996'>1996</option>
-		  <option value='1997'>1997</option>
-		  <option value='1998'>1998</option>
-		  <option value='1999'>1999</option>
+		  <option value='1990'>29세</option>
+		  <option value='1991'>28세</option>
+		  <option value='1992'>27세</option>
+		  <option value='1993'>26세</option>
+		  <option value='1994'>25세</option>
+		  <option value='1995'>24세</option>
+		  <option value='1996'>23세</option>
+		  <option value='1997'>22세</option>
+		  <option value='1998'>21세</option>
+		  <option value='1999'>20세</option>
 		</select>
 	</div> ~
 	
 	<div class="age-dropdown2">
 		<select name='age'>
 		  <option value='' selected>-- 선택 --</option>
-		  <option value='1990'>1990</option>
-		  <option value='1991'>1991</option>
-		  <option value='1992'>1992</option>
-		  <option value='1993'>1993</option>
-		  <option value='1994'>1994</option>
-		  <option value='1995'>1995</option>
-		  <option value='1996'>1996</option>
-		  <option value='1997'>1997</option>
-		  <option value='1998'>1998</option>
-		  <option value='1999'>1999</option>
+		  <option value='1990'>29세</option>
+		  <option value='1991'>28세</option>
+		  <option value='1992'>27세</option>
+		  <option value='1993'>26세</option>
+		  <option value='1994'>25세</option>
+		  <option value='1995'>24세</option>
+		  <option value='1996'>23세</option>
+		  <option value='1997'>22세</option>
+		  <option value='1998'>21세</option>
+		  <option value='1999'>20세</option>
 		</select>
 	</div>
 </div>
