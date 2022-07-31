@@ -3,11 +3,10 @@ package connect;
 import java.sql.*;
 import java.util.ArrayList;
 
-import db.Result_Match;
+import db.FAQ;
+import db.Notice;
 import db.Review;
 import db.Users001;
-import faq.FAQ;
-import notice.Notice;
 
 public class PreDAO {
 
@@ -45,7 +44,6 @@ public class PreDAO {
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				userList.add(new Users001(
-						rs.getString("userno"),
 						rs.getString("nickname"),
 						rs.getString("gender"),
 						rs.getInt("age"),
@@ -93,107 +91,6 @@ public class PreDAO {
 			}
 		}
 		return userList;
-	}
-
-	public void setResultMat(Result_Match ins) {
-		try {
-			setConn();
-			con.setAutoCommit(false);
-			String sql = "INSERT INTO RESULT_MATCH VALUES(?,?,?,?)";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, ins.getUsernoM());
-			pstmt.setString(2, ins.getUsernoF());
-			pstmt.setString(3, ins.getChoiceMF());
-			pstmt.setString(3, ins.getChoiceFM());
-			pstmt.executeUpdate();
-			con.commit();
-			pstmt.close();
-			con.close();
-		} catch (SQLException e) {
-			System.out.println("DB 에러 : " + e.getMessage());
-			try {
-				con.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-		} catch (Exception e) {
-			System.out.println("일반 예외 : " + e.getMessage());
-		} finally {
-			if(pstmt!=null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if(con!=null) {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-
-	public Result_Match getResultMatch(Result_Match sch) {
-		Result_Match rm = new Result_Match();
-		try {
-			setConn();
-			String sql = "SELECT * FROM RESULT_MATCH\n"
-					+ "WHERE USERNOM = ?\n"
-					+ "AND USERNOF = ?";
-			System.out.println(sql);
-			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, sch.getUsernoM());
-			pstmt.setString(2, sch.getUsernoF());
-			rs = pstmt.executeQuery();
-			// 하나의 데이터 결과 처리이기에 바로 처리
-			// [핵심코드]
-			while(rs.next()) {
-				rm = new Result_Match(
-							rs.getString("usernom"),
-							rs.getString("usernof"),
-							rs.getString("choicemf"),
-							rs.getString("choidefm")
-				);
-			}
-			// 자원해제
-			rs.close();
-			pstmt.close();
-			con.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			System.out.println("일반 예외 : " + e.getMessage());
-		} finally {
-			if(rs!=null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			if(pstmt!=null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			if(con!=null) {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-		return rm;
 	}
 
 	public Users001 logIn(String id, String password) {
@@ -246,8 +143,8 @@ public class PreDAO {
 	}
 
 	/**   회원 조회   **/
-	public Users001 getUserList(String userno) {
-		Users001 userInfo = new Users001();
+	public ArrayList<Users001> getUserList(String userno) {
+		ArrayList<Users001> userList = new ArrayList<Users001>();
 		try {
 			setConn();
 			String sql = "SELECT userno, nickname, gender, age, loc, "
@@ -259,7 +156,7 @@ public class PreDAO {
 			pstmt.setString(1, userno);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
-				userInfo = new Users001(
+				userList.add(new Users001(
 						rs.getString("nickname"),
 						rs.getString("gender"),
 						rs.getInt("age"),
@@ -269,7 +166,8 @@ public class PreDAO {
 						rs.getString("interest3"),
 						rs.getString("interest4"),
 						rs.getString("interest5")
-					);
+					)
+				);
 			}
 			rs.close();
 			pstmt.close();
@@ -305,7 +203,7 @@ public class PreDAO {
 				}
 			}
 		}
-		return userInfo;
+		return userList;
 	}
 
 	
@@ -360,13 +258,13 @@ public class PreDAO {
 	}
 
 
-	/**  회원 등록 (6월 30일 : 권한 추가)  **/
+	/**  회원 등록  **/
 	public void insertUsers(Users001 ins) {
 		try {
 			setConn();
 			con.setAutoCommit(false);
-			String sql = "INSERT INTO users001(userno, id, password, nickname, gender, age, loc, auth)\r\n"
-					+ "			values('U' || seq_userno.nextval, ?, ?, ?, ?, ?, ?, 'user')";
+			String sql = "INSERT INTO users001(userno, id, password, nickname, gender, age, loc)\r\n"
+					+ "			values('U' || seq_userno.nextval, ?, ?, ?, ?, ?, ?)";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, ins.getId());
 			pstmt.setString(2, ins.getPassword());
@@ -518,47 +416,6 @@ public class PreDAO {
 		}
 	}
 
-	/**   회원 가입3 관심사 추가 수정   **/
-	public void updateUsersImage(Users001 ins) {
-		try {
-			setConn();
-			con.setAutoCommit(false);
-			String sql = "UPDATE users001\r\n"
-					+ "			SET image = ?\r\n"
-					+ "			WHERE id = ?";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, ins.getImage());
-			pstmt.setString(2, ins.getId());
-			pstmt.executeUpdate();
-			con.commit();
-			pstmt.close();
-			con.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			System.out.println("DB 에러 : " + e.getMessage());
-			// commit 전에 예외가 발생하면 rollback 처리
-		} catch (Exception e) {
-			System.out.println("일반 예외 : " + e.getMessage());
-		} finally {
-			if(pstmt!=null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			if(con!=null) {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-
 	/**   회원 삭제   **/
 	public void deleteUsers(String userno) {
 		try {
@@ -599,9 +456,146 @@ public class PreDAO {
 	}
 
 	/**   공지 조회   **/
-	
+	public ArrayList<Notice> showNoticeInfo(String noticeno) {
+		ArrayList<Notice> notiList = new ArrayList<Notice>();
+		try {
+			setConn();
+			String sql = "SELECT nttitle, ntcontent\n"
+					+ "FROM notice\n"
+					+ "WHERE noticeno = ?";
+			System.out.println(sql);
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, noticeno);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				notiList.add(new Notice(
+						rs.getString("noticeno"),
+						rs.getString("nttitle"),
+						rs.getDate("ntdate"),
+						rs.getString("ntcontent")
+					)
+				);
+			}
+			rs.close();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			System.out.println("일반 예외 : " + e.getMessage());
+		} finally {
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return notiList;
+	}
+
 	/**   공지 등록   **/
-	
+	public void insertNotice(Notice ins) {
+		try {
+			setConn();
+			con.setAutoCommit(false);
+			String sql = "INSERT INTO notice \n"
+					+ "values(?, ?, sysdate, ?)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, ins.getNoticeno());
+			pstmt.setString(2, ins.getNttitle());
+			pstmt.setString(3, ins.getNtcontent());
+			pstmt.executeUpdate();
+			con.commit();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : " + e.getMessage());
+			// commit 전에 예외가 발생하면 rollback 처리
+		} catch (Exception e) {
+			System.out.println("일반 예외 : " + e.getMessage());
+		} finally {
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	/**   공지 수정   **/
+	public void updateNotice(Notice ins) {
+		try {
+			setConn();
+			con.setAutoCommit(false);
+			String sql = "UPDATE notice\n"
+					+ "    SET nttitle = ?,\n"
+					+ "        ntcontent= ?\n"
+					+ "WHERE noticeno = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, ins.getNttitle());
+			pstmt.setString(2, ins.getNtcontent());
+			pstmt.setString(3, ins.getNoticeno());
+			pstmt.executeUpdate();
+			con.commit();
+			pstmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 에러 : " + e.getMessage());
+			// commit 전에 예외가 발생하면 rollback 처리
+		} catch (Exception e) {
+			System.out.println("일반 예외 : " + e.getMessage());
+		} finally {
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 
 	/**   공지 삭제   **/
 	public void deleteNotice(String noticeno) {
@@ -1064,130 +1058,13 @@ public class PreDAO {
 			}
 		}
 	}
-	/**   프로필 조회   **/
-	public Users001 showProfile(String id) {
-		Users001 u = new Users001();
-		try {
-			setConn();
-			String sql = "SELECT * \r\n"
-					+ "FROM Users001 \r\n"
-					+ "WHERE id=?";
-			System.out.println(sql);
-			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, id);
-			rs = pstmt.executeQuery();
-		while(rs.next()) {
-			u = new Users001(rs.getString("userno"), rs.getString("id"), rs.getString("password"), rs.getString("nickname"),
-					rs.getString("gender"), rs.getInt("age"), rs.getString("loc"), rs.getString("interest1"), rs.getString("interest2"),
-					rs.getString("interest3"),rs.getString("interest4"),rs.getString("interest5")
-					);
-		}
-		// 자원해제(열린순서 반대 방향)
-		rs.close();
-		pstmt.close();
-		con.close();
-		// 예외 처리.
-		// 기본 예외 : DB - SQLException
-		// 일반 예외 : Exception
-	} catch (SQLException e) {
-		// TODO Auto-generated catch block
-		System.out.println("DB 에러:" + e.getMessage());
-	} catch (Exception e) {
-		System.out.println("일반 예외:" + e.getMessage());
-	} finally {
-		if (rs != null) {
-			try {
-				rs.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		if (pstmt != null) {
-			try {
-				pstmt.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		// 예외 상관없이 처리할 내용.
-		if (con != null) {
-			try {
-				con.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
-	return u;
-}
-	/**   프로필 수정   **/
-	public void updateProfile(Users001 ins) {
-		try {
-			setConn();
-			con.setAutoCommit(false);
-			String sql = "UPDATE Users001\r\n"
-					+ "	SET nickname =?,\r\n"
-					+ "		loc = ?,\r\n"
-					+ "		interest1 = ?,\r\n"
-					+ "		interest2 = ?,\r\n"
-					+ "		interest3 = ?,\r\n"
-					+ "		interest4 = ?,\r\n"
-					+ "		interest5 = ?\r\n"
-					+ "	WHERE id=?";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, ins.getNickname());
-			pstmt.setString(2, ins.getLoc());
-			pstmt.setString(3, ins.getInterest1());
-			pstmt.setString(4, ins.getInterest2());
-			pstmt.setString(5, ins.getInterest3());
-			pstmt.setString(6, ins.getInterest4());
-			pstmt.setString(7, ins.getInterest5());
-			pstmt.setString(9, ins.getId());
-			pstmt.executeUpdate();
-			con.commit();
-			pstmt.close();
-			con.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			System.out.println("DB 에러:" + e.getMessage());
-			// commit 전에 예외가 발생하면 rollback 처리..
-			try {
-				con.rollback();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-
-		} catch (Exception e) {
-			System.out.println("일반 예외:" + e.getMessage());
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			// 예외 상관없이 처리할 내용.
-			if (con != null) {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-	}
+	
 
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		PreDAO dao = new PreDAO();
+		dao.insertNotice(new Notice("1", "첫공지", "냉무"));
 	}
 
 }
